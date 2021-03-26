@@ -1,0 +1,70 @@
+spring:
+  profiles:
+    active: "dev"
+  jpa:
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+
+server:
+  port: 8081
+
+loggin:
+  config: classpath:logback.xml
+endpoints:
+  enabled: true
+  health:
+    enabled: true
+---
+
+spring:
+  profiles: "dev"
+  datasource:
+    url: jdbc:postgresql://localhost/e-clinica-security
+    username: postgres
+    password: 1234enter
+    driver-class-name: org.postgresql.Driver
+
+keycloak:
+  realm: E-Clinica
+  auth-server-url: http://localhost:8080/auth
+  ssl-required: external
+  resource: eclinica-security
+  credentials:
+    secret: 428f80e9-eab9-4c08-a0d7-cceb22067b69
+  use-resource-role-mappings: true
+  bearer-only: true
+
+eclinica:
+  keycloak:
+    client_id: eclinica-security
+    secret: ${KEYCLOAK_SECRET}
+
+---
+
+spring:
+  profiles: "prod"
+  datasource:
+    url: ${JDBC_URL}
+    username: ${JDBC_USER}
+    password: ${JDBC_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+keycloak:
+  realm: E-Clinica
+  auth-server-url: ${KEYCLOAK_URL}
+  ssl-required: external
+  resource: eclinica-security
+  credentials:
+    secret: ${KEYCLOAK_SECRET}
+  use-resource-role-mappings: true
+  bearer-only: true
+
+eclinica:
+  keycloak:
+    service-account:
+      client_id: eclinica-security
+      secret: ${KEYCLOAK_SECRET}
