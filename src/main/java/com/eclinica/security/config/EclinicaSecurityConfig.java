@@ -15,6 +15,6 @@ public class EclinicaSecurityConfig {
     public static class Keycloak{
         private String clientId;
         private String secret;
-
+        private String host;
     }
 }

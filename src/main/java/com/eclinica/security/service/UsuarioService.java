@@ -19,6 +19,7 @@ public class UsuarioService {
     @Autowired
     private UserKeycloakRepository userKeycloakRepository;
 
+
     public List<UserKeycloakRepr> findByFilter(UserKeycloakRepr filter){
         log.info("chamando o authRepository");
 

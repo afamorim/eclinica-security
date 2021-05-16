@@ -1,11 +1,16 @@
 package com.eclinica.security.representation;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
+@Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserKeycloakRepr {
     private String  id;

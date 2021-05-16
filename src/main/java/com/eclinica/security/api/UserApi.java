@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
+
 @RestController
 @RequestMapping("/users/v1")
 public class UserApi {
@@ -15,9 +17,10 @@ public class UserApi {
     @Autowired
     private UsuarioService userService;
 
+    @RolesAllowed("admin")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<String> getUsers() {
-        userService.findByFilter(new UserKeycloakRepr());
+        userService.findByFilter(UserKeycloakRepr.builder().build());
         return ResponseEntity.ok("Hello Admin");
     }
 }

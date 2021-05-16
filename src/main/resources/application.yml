@@ -28,20 +28,23 @@ spring:
     password: 1234enter
     driver-class-name: org.postgresql.Driver
 
+<!-- Keycloak configuration to validate jwt's token -->
 keycloak:
   realm: E-Clinica
   auth-server-url: http://localhost:8080/auth
   ssl-required: external
   resource: eclinica-security
   credentials:
-    secret: 428f80e9-eab9-4c08-a0d7-cceb22067b69
+    secret: 59548709-439c-4957-8600-630c7642d0dc
   use-resource-role-mappings: true
   bearer-only: true
 
+  <!-- Eclinica config to use the svc account to integrate with keycloak's -->
 eclinica:
   keycloak:
     client_id: eclinica-security
-    secret: ${KEYCLOAK_SECRET}
+    secret: 59548709-439c-4957-8600-630c7642d0dc
+    host: http://localhost:8080/
 
 ---
 
@@ -68,3 +71,4 @@ eclinica:
     service-account:
       client_id: eclinica-security
       secret: ${KEYCLOAK_SECRET}
+    host: ${KEYKLOAK_URL}
