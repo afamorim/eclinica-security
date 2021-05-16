@@ -7,6 +7,8 @@ services:
       POSTGRES_PASSWORD: 1234enter
     ports:
       - '5432:5432'
+    volumes:
+      - ./create-database.sql:/docker-entrypoint-initdb.d/create-database.sql
   kecloak:
     restart: unless-stopped
     image: quay.io/keycloak/keycloak:12.0.4
