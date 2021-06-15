@@ -1,6 +1,7 @@
 package com.eclinica.security.service;
 
 import com.eclinica.security.repositry.AuthRepository;
+import com.eclinica.security.repositry.UserKeyClocakFeignRepository;
 import com.eclinica.security.repositry.UserKeycloakRepository;
 import com.eclinica.security.representation.UserKeycloakRepr;
 import lombok.extern.slf4j.Slf4j;
@@ -14,16 +15,20 @@ import java.util.List;
 public class UsuarioService {
 
     @Autowired
-    private AuthRepository authRepository;
+    private AuthRepository                  authRepository;
 
     @Autowired
-    private UserKeycloakRepository userKeycloakRepository;
+    private UserKeycloakRepository          userKeycloakRepository;
+
+    @Autowired
+    private UserKeyClocakFeignRepository    userKeyClocakFeignRepository;
 
 
     public List<UserKeycloakRepr> findByFilter(UserKeycloakRepr filter){
-        log.info("chamando o authRepository");
+        log.debug("chamando o authRepository");
 
-        List userList =  userKeycloakRepository.findByFilter(authRepository.getToken(), filter);
+        //userKeycloakRepository.findByFilter(authRepository.getToken(), filter);
+        List userList =  userKeyClocakFeignRepository.findByFilter(filter.getFirstName(), filter.getUsername());
 
         log.info((userList != null) ? userList.toString() : "Null");
 

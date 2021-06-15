@@ -12,12 +12,31 @@ spring:
 server:
   port: 8081
 
-loggin:
-  config: classpath:logback.xml
+logging:
+  level:
+    root: INFO
+    com.eclinica.security: DEBUG
+  #config: classpath:logback.xml
 endpoints:
   enabled: true
   health:
     enabled: true
+
+feign:
+  compression:
+    request:
+      enabled: true
+      mime-types: application/json
+    response:
+      enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 1000
+        readTimeout: 60000
+        decode404: false
+        loggerLevel: ${LOG_LEVEL_FEIGN:full}
+
 ---
 
 spring:
@@ -27,24 +46,49 @@ spring:
     username: postgres
     password: 1234enter
     driver-class-name: org.postgresql.Driver
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak: # <--- It's your custom client. I am using keycloak
+            client-id: eclinica-security
+            client-secret: 0d122f60-1516-4ed1-9f4b-e01e6224b3a7
+            authorization-grant-type: client_credentials
+            scope: openid # your scopes
+        provider:
+          keycloak: # <--- Here Registered my custom provider
+            authorization-uri: http://localhost:8080/auth/realms/E-Clinica/protocol/openid-connect/authorize
+            token-uri: http://localhost:8080/auth/realms/E-Clinica/protocol/openid-connect/token
 
-<!-- Keycloak configuration to validate jwt's token -->
+## Keycloak configuration to validate jwt's token
 keycloak:
   realm: E-Clinica
   auth-server-url: http://localhost:8080/auth
   ssl-required: external
   resource: eclinica-security
   credentials:
-    secret: 59548709-439c-4957-8600-630c7642d0dc
+    secret: 0d122f60-1516-4ed1-9f4b-e01e6224b3a7
   use-resource-role-mappings: true
   bearer-only: true
 
-  <!-- Eclinica config to use the svc account to integrate with keycloak's -->
+## Eclinica config to use the svc account to integrate with keycloak's
 eclinica:
   keycloak:
     client_id: eclinica-security
-    secret: 59548709-439c-4957-8600-630c7642d0dc
+    secret: 0d122f60-1516-4ed1-9f4b-e01e6224b3a7
     host: http://localhost:8080/
+
+keycloaks:
+  context-path: /v1
+  ribbon:
+    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+    listOfServers: http://localhost:8080/auth
+
+feign:
+  client:
+    config:
+      keycloaks:
+        loggerLevel: full
 
 ---
 

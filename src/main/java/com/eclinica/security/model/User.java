@@ -10,9 +10,6 @@ import javax.persistence.*;
 @Entity(name="users")
 public class User {
 
-    @Deprecated
-    public User(){}
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
