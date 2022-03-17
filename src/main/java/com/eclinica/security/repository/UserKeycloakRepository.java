@@ -1,8 +1,8 @@
-package com.eclinica.security.repositry;
+package com.eclinica.security.repository;
 
 import com.eclinica.security.config.EclinicaSecurityConfig;
 import com.eclinica.security.model.KeycloakAPIs;
-import com.eclinica.security.representation.UserKeycloakRepr;
+import com.eclinica.security.representation.UserKeyCloackRepresentation;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -22,7 +22,7 @@ public class UserKeycloakRepository {
     @Autowired
     private EclinicaSecurityConfig eclinicaSecurityConfig;
 
-    public List<UserKeycloakRepr> findByFilter(String token, UserKeycloakRepr filter){
+    public List<UserKeyCloackRepresentation> findByFilter(String token, UserKeyCloackRepresentation filter){
         try {
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -35,7 +35,7 @@ public class UserKeycloakRepository {
 
             if (response.getStatusCodeValue() == 200){
 
-                    List<UserKeycloakRepr> listCar = mapper.readValue(response.getBody(), new TypeReference<List<UserKeycloakRepr>>(){});
+                    List<UserKeyCloackRepresentation> listCar = mapper.readValue(response.getBody(), new TypeReference<List<UserKeyCloackRepresentation>>(){});
                     return listCar;
             }
 

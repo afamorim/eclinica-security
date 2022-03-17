@@ -75,7 +75,7 @@ keycloak:
 eclinica:
   keycloak:
     client_id: eclinica-security
-    secret: 0d122f60-1516-4ed1-9f4b-e01e6224b3a7
+    secret: 7d7ebe29-8b5f-4aef-9c8a-5bb138ee4629
     host: http://localhost:8080/
 
 keycloaks:

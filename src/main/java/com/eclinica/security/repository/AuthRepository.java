@@ -1,4 +1,4 @@
-package com.eclinica.security.repositry;
+package com.eclinica.security.repository;
 
 import com.eclinica.security.config.EclinicaSecurityConfig;
 import com.eclinica.security.model.KeycloakAPIs;

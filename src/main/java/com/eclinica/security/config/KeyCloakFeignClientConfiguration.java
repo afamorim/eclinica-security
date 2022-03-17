@@ -34,32 +34,20 @@ import java.util.concurrent.atomic.AtomicReference;
 public class KeyCloakFeignClientConfiguration {
 
     @Autowired
-    private OAuth2AuthorizedClientManager   authorizedClientManager;
-
-    @Autowired
     private EclinicaSecurityConfig  eclinicaSecurityConfig;
 
     private final String ACCESS_TOKEN = "access_token";
+
+    private final String GRANT_TYPE = "grant_type";
 
     @Bean
     public RequestInterceptor requestInterceptor() {
         return new RequestInterceptor() {
             @Override
             public void apply(RequestTemplate template) {
-//                if (template.headers().get("Authorization") != null) {
-                    OAuth2AccessToken accessToken = getAccessToken();
-                    template.header("Authorization", "Bearer " + getToken());
-//                }
+                template.header(HttpHeaders.AUTHORIZATION, "Bearer " + getToken());
             }
         };
-    }
-
-    private OAuth2AccessToken getAccessToken() {
-        OAuth2AuthorizeRequest request = OAuth2AuthorizeRequest
-                .withClientRegistrationId("keycloak") // <- Here you load your registered client
-                .principal(SecurityContextHolder.getContext().getAuthentication())
-                .build();
-        return authorizedClientManager.authorize(request).getAccessToken();
     }
 
     public String getToken()  {
@@ -75,11 +63,11 @@ public class KeyCloakFeignClientConfiguration {
 
 
         MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
-        map.add("grant_type", AuthorizationGrantType.CLIENT_CREDENTIALS.getValue());
+        map.add(GRANT_TYPE, AuthorizationGrantType.CLIENT_CREDENTIALS.getValue());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, httpHeaders);
 
-        log.debug("chamada para retorno do token " + eclinicaSecurityConfig.getKeycloak().getHost());
+        log.debug("keycloak host " + eclinicaSecurityConfig.getKeycloak().getHost());
 
         ResponseEntity<String> response = restTemplate.postForEntity(eclinicaSecurityConfig.getKeycloak().getHost() + KeycloakAPIs.TOKEN_API.getValue(), request, String.class);
 
@@ -107,13 +95,4 @@ public class KeyCloakFeignClientConfiguration {
 
         return null;
     }
-
-//    private OAuth2ProtectedResourceDetails resource() {
-//        final ClientCredentialsResourceDetails details = new ClientCredentialsResourceDetails();
-//        details.setAccessTokenUri("http://localhost:8090/security/token");
-//        details.setClientId("demo");
-//        details.setClientSecret("secret");
-//        details.setScope(Arrays.asList("read", "write"));
-//        return details;
-//    }
 }

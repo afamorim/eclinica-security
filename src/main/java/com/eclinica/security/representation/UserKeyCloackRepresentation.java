@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserKeycloakRepr {
+public class UserKeyCloackRepresentation {
     private String  id;
     private Date    createdTimestamp;
     private String  username;

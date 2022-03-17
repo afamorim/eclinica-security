@@ -1,6 +1,6 @@
 package com.eclinica.security.api;
 
-import com.eclinica.security.representation.UserKeycloakRepr;
+import com.eclinica.security.representation.UserKeyCloackRepresentation;
 import com.eclinica.security.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +17,10 @@ public class UserApi {
     @Autowired
     private UsuarioService userService;
 
-    @RolesAllowed("admin")
+    @RolesAllowed("System Admin")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<String> getUsers() {
-        userService.findByFilter(UserKeycloakRepr.builder().build());
+        userService.findByFilter(UserKeyCloackRepresentation.builder().build());
         return ResponseEntity.ok("Hello Admin");
     }
 }

@@ -1,9 +1,9 @@
 package com.eclinica.security.service;
 
-import com.eclinica.security.repositry.AuthRepository;
-import com.eclinica.security.repositry.UserKeyClocakFeignRepository;
-import com.eclinica.security.repositry.UserKeycloakRepository;
-import com.eclinica.security.representation.UserKeycloakRepr;
+import com.eclinica.security.repository.AuthRepository;
+import com.eclinica.security.repository.UserKeyClocakFeignRepository;
+import com.eclinica.security.repository.UserKeycloakRepository;
+import com.eclinica.security.representation.UserKeyCloackRepresentation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class UsuarioService {
     private UserKeyClocakFeignRepository    userKeyClocakFeignRepository;
 
 
-    public List<UserKeycloakRepr> findByFilter(UserKeycloakRepr filter){
+    public List<UserKeyCloackRepresentation> findByFilter(UserKeyCloackRepresentation filter){
         log.debug("chamando o authRepository");
 
         //userKeycloakRepository.findByFilter(authRepository.getToken(), filter);
